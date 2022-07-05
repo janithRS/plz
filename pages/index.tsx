@@ -1,7 +1,6 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 
-export const linesArray = [
+const linesArray = [
   "Damn, I'm no weather man, but you can expect a couple inches tonight.",
   "Hey, my name's Microsft. Can I crash at your place tonight?",
   "Did the sun come out or did you just smile at me?",
@@ -59,17 +58,6 @@ export const linesArray = [
   "If I asked you out on a date, would your answer be the same as your answer to this one?",
   "One a scale of 1 to 10, you are an 8. And I'm in 2 you.",
 ];
-
-const getPickupLines = async () => {
-  return axios
-    .get("https://getpickuplines.herokuapp.com/lines/random/")
-    .then(({ data }) => {
-      return data;
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-};
 
 export default function Home() {
   const [pickupLine, setPickupLine] = useState("");
