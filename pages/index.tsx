@@ -62,10 +62,7 @@ export const linesArray = [
 
 const getPickupLines = async () => {
   return axios
-    .get("https://getpickuplines.herokuapp.com/lines/random/", {
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      withCredentials: false,
-    })
+    .get("https://getpickuplines.herokuapp.com/lines/random/")
     .then(({ data }) => {
       return data;
     })
