@@ -1,6 +1,3 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-
 export const linesArray = [
   "Damn, I'm no weather man, but you can expect a couple inches tonight.",
   "Hey, my name's Microsft. Can I crash at your place tonight?",
@@ -59,45 +56,3 @@ export const linesArray = [
   "If I asked you out on a date, would your answer be the same as your answer to this one?",
   "One a scale of 1 to 10, you are an 8. And I'm in 2 you.",
 ];
-
-const getPickupLines = async () => {
-  return axios
-    .get("https://getpickuplines.herokuapp.com/lines/random/", {
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      withCredentials: false,
-    })
-    .then(({ data }) => {
-      return data;
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-};
-
-export default function Home() {
-  const [pickupLine, setPickupLine] = useState("");
-  useEffect(() => {
-    handleFetchLine();
-  }, []);
-
-  const handleFetchLine = () => {
-    setPickupLine(linesArray[Math.floor(Math.random() * linesArray.length)]);
-  };
-
-  return (
-    <div>
-      <p className="text-3xl text-center pt-9">PLZ!</p>
-      <p className="px-5 mt-20 text-2xl text-center">{pickupLine}</p>
-      <div className="absolute inset-x-0 bottom-4 h-16 ...">
-        <div className="relative flex justify-center pl-4 pr-4">
-          <button
-            className="w-screen h-16 max-w-lg font-bold text-white uppercase rounded bg-gradient-to-r from-purple-500 to-pink-500 bottom-0px-2"
-            onClick={handleFetchLine}
-          >
-            Next
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
