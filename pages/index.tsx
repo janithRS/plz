@@ -1,4 +1,6 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 const linesArray = [
   "Damn, I'm no weather man, but you can expect a couple inches tonight.",
@@ -59,24 +61,55 @@ const linesArray = [
   "One a scale of 1 to 10, you are an 8. And I'm in 2 you.",
 ];
 
+const getCatPic = () => {
+  return axios
+    .get("https://api.thecatapi.com/v1/images/search?mime_types=gif")
+    .then(({ data }) => {
+      console.log(data[0]);
+      return data[0];
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
+const myLoader = ({ src, width, quality }) => {
+  return `${src}?w=${width}&q=${quality || 75}`;
+};
+
 export default function Home() {
   const [pickupLine, setPickupLine] = useState("");
+  const [catPic, setCatPic] = useState("");
+
   useEffect(() => {
     handleFetchLine();
   }, []);
 
   const handleFetchLine = () => {
     setPickupLine(linesArray[Math.floor(Math.random() * linesArray.length)]);
+    getCatPic().then((pic) => {
+      setCatPic(pic.url);
+    });
   };
 
   return (
-    <div>
-      <p className="text-3xl text-center pt-9">PLZ!</p>
-      <p className="px-5 mt-20 text-2xl text-center">{pickupLine}</p>
+    <div className="flex flex-col items-center">
+      <p className="text-3xl font-black text-center pt-9">PLZ!</p>
+      <p className="px-5 mt-20 text-2xl font-bold text-center">{pickupLine}</p>
+      {catPic && (
+        <div className="relative w-32 h-32 mt-8 overflow-hidden rounded-full ring-2">
+          <Image
+            loader={myLoader}
+            src={catPic}
+            alt="Picture of the a cat"
+            layout="fill"
+          />
+        </div>
+      )}
       <div className="absolute inset-x-0 bottom-4 h-16 ...">
         <div className="relative flex justify-center pl-4 pr-4">
           <button
-            className="w-screen h-16 max-w-lg font-bold text-white uppercase rounded bg-gradient-to-r from-purple-500 to-pink-500 bottom-0px-2"
+            className="w-screen h-16 max-w-lg font-bold text-white uppercase rounded-md bg-gradient-to-r from-purple-500 to-pink-500 bottom-0px-2"
             onClick={handleFetchLine}
           >
             Next
